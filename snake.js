@@ -39,7 +39,7 @@ let foodY;
  let score1=0;
  let score2=0;
 
-const gameOver=false;
+let gameOver=false;
  window.onload = function(){
 
     board = document.getElementById("board");
@@ -58,6 +58,7 @@ const gameOver=false;
  }
 
  function update(){
+    while(gameOver) return;
     context.fillStyle="black";
     context.fillRect(0,0,board.width,board.height);
 
@@ -143,6 +144,13 @@ const gameOver=false;
     }
     document.getElementById('score1').textContent=score1;
     document.getElementById('score2').textContent=score2;
+    if (score1 >= 10) {
+        gameOver = true;
+        displayWinner("Player 1 Wins!");
+    } else if (score2 >= 10) {
+        gameOver = true;
+        displayWinner("Player 2 Wins!");
+    }
 
 
 
@@ -203,6 +211,12 @@ function drawSnakeTail2(){
      mysteryFoodY=Math.floor(Math.random()*rows)*blockSize;
     getRandomIntInRange(1, 10)
  }
+ function displayWinner(message) {
+    context.fillStyle = "white";
+    context.font = "40px Arial";
+    context.textAlign = "center";
+    context.fillText(message, board.width / 2, board.height / 2);
+}
 
 
 function changeDirection(e) {
