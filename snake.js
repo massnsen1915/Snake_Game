@@ -85,7 +85,9 @@ let gameOver=false;
         placeFood();
     }else if (snakeX1 === mysteryFoodX && snakeY1 === mysteryFoodY){
         score2+=mysteryValue;
-        placeMysteryFood();
+        mysteryFoodX=rows*2*blockSize;
+        mysteryFoodX=cols*2*blockSize;
+        
     }
 
     
@@ -151,6 +153,7 @@ let gameOver=false;
         gameOver = true;
         displayWinner("Player 2 Wins!");
     }
+    updateMysteryFoodPlace();
 
 
 
@@ -220,6 +223,11 @@ function drawSnakeTail2(){
     context.font = "40px Arial";
     context.textAlign = "center";
     context.fillText(message, board.width / 2, board.height / 2);
+}
+function updateMysteryFoodPlace(){
+    if(seconds%80===0){
+        placeMysteryFood();
+    }
 }
 
 
