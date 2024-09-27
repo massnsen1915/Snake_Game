@@ -6,11 +6,11 @@ let board;
 let context;
 
 // snake head
-let snakeX = blockSize * 5;
-let snakeY = blockSize * 5;
+let snakeX = blockSize * 15;
+let snakeY = blockSize * 15;
 
-let snakeX1 = blockSize*15;
-let snakeY1 = blockSize*15;
+let snakeX1 = blockSize*5;
+let snakeY1 = blockSize*5;
 
  // food
 let foodX;
@@ -18,7 +18,7 @@ let foodY;
  // Mystery food
  let mysteryFoodX;
  let mysteryFoodY;
- let mysteryPoint;
+ let mysteryValue;
 
 
  //vitesse snake1;
@@ -28,7 +28,7 @@ let foodY;
   let velocityX1=0;
   let velocityY1=0;
  //timer
-  let seconds;
+  let seconds=0;;
 
  // body snake
  const snakeBody =[];
@@ -49,46 +49,46 @@ let gameOver=false;
 
 
      placeFood();
+     placeMysteryFood();
 
     document.addEventListener("keyup",changeDirection);
 
-
+   
     setInterval(update,1000/10);
 
  }
 
  function update(){
     while(gameOver) return;
+    seconds++;
     context.fillStyle="black";
     context.fillRect(0,0,board.width,board.height);
-
+    context.fillStyle="purple";
+    context.fillRect(mysteryFoodX,mysteryFoodY,blockSize,blockSize);
     context.fillStyle="red";
     context.fillRect(foodX,foodY,blockSize,blockSize);
-    context.fillStyle="";
-    context.fillRect(foodX,foodY,blockSize,blockSize);
+   
 
     if(snakeX === foodX && snakeY === foodY){
         snakeBody.push([foodX,foodY]);
         score1+=1;
         placeFood();
+       
+    }else if (snakeX === mysteryFoodX && snakeY === mysteryFoodY){
+        score1+=mysteryValue;
+        mysteryFoodX=rows*2*blockSize;
+        mysteryFoodX=cols*2*blockSize;
     }
     if(snakeX1 === foodX && snakeY1 === foodY){
         snakeBody1.push([foodX,foodY]);
         score2+=1;
         placeFood();
+    }else if (snakeX1 === mysteryFoodX && snakeY1 === mysteryFoodY){
+        score2+=mysteryValue;
+        placeMysteryFood();
     }
 
-    if(snakeX === mysteryFoodX && snakeY=== mysteryFoodY){
-        snakeBody.push([mysteryFoodX,mysteryFoodY]);
-        score1+=1;
-        placeFood();
-    }
-    if(snakeX1 === foodX && snakeY1 === foodY){
-        snakeBody1.push([foodX,foodX]);
-        score2+=1;
-        placeFood();
-    }
-
+    
 
    drawSnakeTail1();
    drawSnakeTail2();
@@ -104,13 +104,13 @@ let gameOver=false;
     if( snakeX>rows*blockSize){
         snakeX=0;
     }else if(snakeX<0){
-        snakeX=rows*blockSize;
+        snakeX=(rows-1)*blockSize;
     }
 
     if( snakeY>cols*blockSize){
         snakeY=0;
     }else if(snakeY<0){
-        snakeY=cols*blockSize;
+        snakeY=(cols-1)*blockSize;
     }
 
 
@@ -127,13 +127,13 @@ let gameOver=false;
     if( snakeX1>rows*blockSize){
         snakeX1=0;
     }else if(snakeX1<0){
-        snakeX1=rows*blockSize;
+        snakeX1=(rows-1)*blockSize;
     }
 
     if( snakeY1>cols*blockSize){
         snakeY1=0;
     }else if(snakeY1<0){
-        snakeY1=cols*blockSize;
+        snakeY1=(cols-1)*blockSize;
     }
 
 
@@ -159,7 +159,7 @@ let gameOver=false;
 
 
 function creatSnakeHead1(){
-    context.fillStyle="green";
+    context.fillStyle="blue";
     snakeX += velocityX*blockSize;
     snakeY += velocityY*blockSize;
     context.fillRect(snakeX,snakeY,blockSize,blockSize);
@@ -183,7 +183,7 @@ function drawSnakeTail1(){
 }
 
 function creatSnakeHead2(){
-    context.fillStyle="blue";
+    context.fillStyle="green";
     snakeX1+=velocityX1*blockSize;
     snakeY1+=velocityY1*blockSize;
     context.fillRect(snakeX1,snakeY1,blockSize,blockSize);
@@ -208,9 +208,13 @@ function drawSnakeTail2(){
  }
  function placeMysteryFood(){
     mysteryFoodX=Math.floor(Math.random()*cols)*blockSize;
-     mysteryFoodY=Math.floor(Math.random()*rows)*blockSize;
-    getRandomIntInRange(1, 10)
+    mysteryFoodY=Math.floor(Math.random()*rows)*blockSize;
+    mysteryValue=getRandomIntInRange(-1,3);
+    
  }
+ function getRandomIntInRange(min, max) {
+    return Math.floor(Math.random() * (3- min + 1)) + min;
+}
  function displayWinner(message) {
     context.fillStyle = "white";
     context.font = "40px Arial";
