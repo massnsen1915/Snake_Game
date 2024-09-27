@@ -38,7 +38,30 @@ let foodY;
  // score :
  let score1=0;
  let score2=0;
+ function restartGame() {
 
+    snakeX = blockSize * 5;
+    snakeY = blockSize * 5;
+    snakeX1 = blockSize * 15;
+    snakeY1 = blockSize * 15;
+
+    velocityX = 0;
+    velocityY = 0;
+    velocityX1 = 0;
+    velocityY1 = 0;
+
+    snakeBody.length = 0;
+    snakeBody1.length = 0;
+
+    score1 = 0;
+    score2 = 0;
+
+    placeFood();
+    placeMysteryFood();
+
+    document.getElementById('score1').textContent = score1;
+    document.getElementById('score2').textContent = score2;
+}
 let gameOver=false;
  window.onload = function(){
 
@@ -116,10 +139,7 @@ let gameOver=false;
     }
 
 
-     for(let i=0;i<snakeBody.length;i++){
-        if(snakeX === snakeBody[i][0] &&snakeY === snakeBody[i][1])
-            alert("game over");
-    }
+     
 
 
 
@@ -138,20 +158,31 @@ let gameOver=false;
         snakeY1=(cols-1)*blockSize;
     }
 
-
+    for(let i=0;i<snakeBody.length;i++){
+        if(snakeX === snakeBody[i][0] &&snakeY === snakeBody[i][1])
+         {
+            window.location.href = 'endGame1.html';
+        }
+    }
 
      for(let i=0;i<snakeBody1.length;i++){
-        if(snakeX1 === snakeBody1[i][0] && snakeY1 === snakeBody1[i][1])
-            alert("game over");
-    }
+         if(snakeX1 === snakeBody1[i][0] && snakeY1 === snakeBody1[i][1]){
+             window.location.href = 'endGame2.html';
+         }
+     }
+
+
+
+    
     document.getElementById('score1').textContent=score1;
     document.getElementById('score2').textContent=score2;
-    if (score1 >= 10) {
+    if (score1 >= 1) {
         gameOver = true;
-        displayWinner("Player 1 Wins!");
-    } else if (score2 >= 10) {
+        window.location='endGame2.html'
+    } else if (score2 >= 1) {
         gameOver = true;
-        displayWinner("Player 2 Wins!");
+        window.location='endGame1.html'
+        
     }
     updateMysteryFoodPlace();
 
